@@ -1,28 +1,19 @@
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.concurrent.EventExecutorGroup;
+
+import java.util.Date;
 
 /**
  *
  * @author cenxin
  * @date 2018/1/30
  */
-public class TimeClientHandler extends ChannelInboundHandlerAdapter {
-
-    private final ByteBuf firstMessage;
-
-    public TimeClientHandler() {
-        byte[] req = "QUERY TIME ORDER".getBytes();
-        firstMessage = Unpooled.buffer(req.length);
-        firstMessage.writeBytes(req);
-    }
-
+public class TimeServerHandler extends ChannelInboundHandlerAdapter {
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(firstMessage);
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("handlerAdded --> " + ctx.name());
     }
 
     @Override
@@ -31,12 +22,20 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
         String body = new String(req, "UTF-8");
-        System.out.println("Now is : " + body);
+        System.out.println("The Time server receive order : " + body);
+        String curTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new Date().toString()
+                : "BAD ORDER";
+        ByteBuf res = Unpooled.copiedBuffer(curTime.getBytes());
+        ctx.write(res);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println("Unexpected exception from downstream : " + cause.getMessage());
         ctx.close();
     }
 }

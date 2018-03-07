@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Maven: com.google.protobuf:protobuf-java:unknown">
+    <CLASSES />
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/unknown/protobuf-java-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/unknown/protobuf-java-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

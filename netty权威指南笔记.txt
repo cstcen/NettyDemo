@@ -1,0 +1,1 @@
+1.ByteBuf类似于JDK中的java.nio.ByteBufer 对象，不过它提供了更加强大的灵活的功能。通过ByteBuf的readableBytes方法可以获取缓冲区可读的字节数，根据可读的字节数创建byte数据，通过ByteBuf的readBytes方法将缓冲区中的字节数组复制到新建的byte数组中，最后通过new String 构造函数获取请求消息。

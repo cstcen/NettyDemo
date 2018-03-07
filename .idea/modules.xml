@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/NettyDemo.iml" filepath="$PROJECT_DIR$/.idea/NettyDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NettyDemo.iml" filepath="$PROJECT_DIR$/NettyDemo.iml" />
     </modules>
   </component>
 </project>

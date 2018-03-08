@@ -6,13 +6,13 @@ import java.util.Map;
 /**
  * Created by cx on 2018-3-7.
  */
-public class MsgWrapper implements Serializable {
+public class RequestWrapper implements Serializable {
 
     private int requestType;
     private String context;
     private Map<String, Object> operMap;
 
-    public MsgWrapper(int requestType) {
+    public RequestWrapper(int requestType) {
         this.requestType = requestType;
     }
 

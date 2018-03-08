@@ -4,7 +4,7 @@ import com.cx.udp.player.AnQiLa;
 import com.cx.udp.player.IPlayerOperation;
 import com.cx.udp.player.LiBai;
 import com.cx.udp.player.Player;
-import com.cx.udp.util.MsgWrapper;
+import com.cx.udp.util.RequestWrapper;
 import com.cx.udp.util.UdpUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
@@ -14,10 +14,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
-import io.netty.util.CharsetUtil;
 
 import java.net.InetSocketAddress;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -42,15 +40,15 @@ public class UdpClient {
                     //设置消息处理器
                     .handler(new UdpClientInitializer());
             channel = b.bind(0).sync().channel();
-            MsgWrapper msgWrapper = new MsgWrapper(1);
-            msgWrapper.setContext("连接服务器……");
+            RequestWrapper msgWrapper = new RequestWrapper(1);
+            msgWrapper.setContext("有客户端连接服务器……");
             channel.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(UdpUtil.objToBytes(msgWrapper)), new InetSocketAddress(hostname, port)));
         } catch (Exception e) {
             group.shutdownGracefully();
         }
     }
 
-    public void send(MsgWrapper msgWrapper) {
+    public void send(RequestWrapper msgWrapper) {
         UdpUtil.send(msgWrapper, channel, "255.255.255.255", port);
     }
 

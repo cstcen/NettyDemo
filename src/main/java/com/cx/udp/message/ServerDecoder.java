@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by cx on 2018-3-7.
  */
-public class GameDecoder extends ByteToMessageDecoder {
+public class ServerDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
 

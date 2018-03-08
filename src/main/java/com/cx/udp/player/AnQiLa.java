@@ -1,6 +1,6 @@
 package com.cx.udp.player;
 
-import com.cx.udp.util.MsgWrapper;
+import com.cx.udp.util.RequestWrapper;
 
 
 /**
@@ -13,22 +13,22 @@ public class AnQiLa extends Player {
     }
 
     @Override
-    public MsgWrapper q(Player[] players) {
+    public RequestWrapper q(Player[] players) {
         return operate(players, "咒术火焰", 3);
     }
 
     @Override
-    public MsgWrapper w(Player[] players) {
+    public RequestWrapper w(Player[] players) {
         return operate(players, "火球术", 5);
     }
 
     @Override
-    public MsgWrapper e(Player[] players) {
+    public RequestWrapper e(Player[] players) {
         return operate(players, "混沌火球", 10);
     }
 
     @Override
-    public MsgWrapper r(Player[] players) {
+    public RequestWrapper r(Player[] players) {
         return operate(players, "灼热光辉", 20);
     }
 }

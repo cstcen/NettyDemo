@@ -59,10 +59,10 @@ public class UdpServerInitializer extends ChannelInitializer<NioDatagramChannel>
         // 心跳处理handler
         pipeline.addLast("UdpHeartBeatServerHandler", new UdpHeartBeatServerHandler());
 
-//        // 帧同步
-//        pipeline.addLast("turn", new IdleStateHandler(1, 0, 0,
-//                TimeUnit.SECONDS));
-//        pipeline.addLast("lockstepHandler", new UdpLockstepHandler());
+        // 帧同步
+        pipeline.addLast("turn", new IdleStateHandler(1, 0, 0,
+                TimeUnit.SECONDS));
+        pipeline.addLast("lockstepHandler", new UdpLockstepHandler());
 
     }
 }

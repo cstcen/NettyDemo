@@ -4,11 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.DatagramPacket;
-import io.netty.util.CharsetUtil;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.util.Map;
 
 /**
  * 工具类
@@ -22,24 +20,50 @@ public class UdpUtil {
         return new String(bytes);
     }
 
-    public static MsgWrapper byteBufToMsgWrapper(ByteBuf byteBuf) {
+    public static int readInt(ByteBuf buffer) {
+        Integer num = buffer.readInt();
+        return Integer.reverseBytes(num);
+    }
+
+    public static void writeInt(ByteBuf buffer, Integer value) {
+        buffer.writeInt(Integer.reverseBytes(value));
+    }
+
+    public static RequestWrapper byteBufToReqWrapper(ByteBuf byteBuf) {
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
 
         ByteArrayInputStream byteInt = null;
         ObjectInputStream objInt = null;
-        MsgWrapper msgWrapper = null;
+        RequestWrapper wrapper = null;
         try {
             byteInt = new ByteArrayInputStream(bytes);
             objInt = new ObjectInputStream(byteInt);
-            msgWrapper = (MsgWrapper) objInt.readObject();
+            wrapper = (RequestWrapper) objInt.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return msgWrapper;
+        return wrapper;
     }
 
-    public static void send(MsgWrapper msgWrapper, Channel channel, String hostname, int port) {
+    public static ResponseWrapper byteBufToResWrapper(ByteBuf byteBuf) {
+        byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(bytes);
+
+        ByteArrayInputStream byteInt = null;
+        ObjectInputStream objInt = null;
+        ResponseWrapper wrapper = null;
+        try {
+            byteInt = new ByteArrayInputStream(bytes);
+            objInt = new ObjectInputStream(byteInt);
+            wrapper = (ResponseWrapper) objInt.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return wrapper;
+    }
+
+    public static void send(RequestWrapper msgWrapper, Channel channel, String hostname, int port) {
         byte[] bytes = objToBytes(msgWrapper);
         if (bytes != null) {
             channel.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(bytes), new InetSocketAddress(hostname, port)));

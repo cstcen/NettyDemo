@@ -1,7 +1,6 @@
 package com.cx.udp.player;
 
-import com.cx.udp.util.MsgWrapper;
-import com.cx.udp.util.UdpUtil;
+import com.cx.udp.util.RequestWrapper;
 import io.netty.channel.Channel;
 import io.netty.channel.socket.DatagramPacket;
 
@@ -44,7 +43,7 @@ public abstract class Player implements IPlayerOperation {
      * @return
      */
     @Override
-    public MsgWrapper operate(Player[] targets, String operation, int damage) {
+    public RequestWrapper operate(Player[] targets, String operation, int damage) {
         StringBuilder sb = new StringBuilder(this.getName() + "--对");
         for (int i = 0; i < targets.length; i++) {
             sb.append(targets[i].getName() + "（" + targets[i].getBlood() + "）");
@@ -54,7 +53,7 @@ public abstract class Player implements IPlayerOperation {
         }
         sb.append("释放了《" + operation + "》技能！");
         System.out.println(sb.toString());
-        MsgWrapper msgWrapper = new MsgWrapper(2);
+        RequestWrapper msgWrapper = new RequestWrapper(2);
         Map<String, Object> operMap = new HashMap<String, Object>(3);
         operMap.put("targets", targets);
         operMap.put("operation", operation);

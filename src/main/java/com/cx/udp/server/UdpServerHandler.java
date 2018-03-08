@@ -1,6 +1,6 @@
 package com.cx.udp.server;
 
-import com.cx.udp.util.MsgWrapper;
+import com.cx.udp.util.RequestWrapper;
 import com.cx.udp.util.UdpUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,16 +22,14 @@ public class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket) throws Exception {
         System.out.println(channelHandlerContext.name() + "消息来源"  + datagramPacket.sender().getHostString() +":"+ datagramPacket.sender().getPort());
-        System.out.println(datagramPacket.sender().getHostString());
         // 消息处理。。。。。
-        MsgWrapper msgWrapper = UdpUtil.byteBufToMsgWrapper(datagramPacket.content());
+        RequestWrapper msgWrapper = UdpUtil.byteBufToReqWrapper(datagramPacket.content());
         if (msgWrapper.getRequestType() == 1) {
             System.out.println(msgWrapper.getContext());
             //消息发送。。。。
             DatagramPacket dp = new DatagramPacket(Unpooled.copiedBuffer("连接成功！".getBytes()), datagramPacket.sender());
             UdpServer.channel.writeAndFlush(dp);
         }
-
 
     }
 

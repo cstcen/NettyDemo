@@ -63,15 +63,6 @@ public class UdpUtil {
         return wrapper;
     }
 
-    public static void send(RequestWrapper msgWrapper, Channel channel, String hostname, int port) {
-        byte[] bytes = objToBytes(msgWrapper);
-        if (bytes != null) {
-            channel.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(bytes), new InetSocketAddress(hostname, port)));
-        } else {
-            System.out.println("发送失败！信息为null");
-        }
-    }
-
     public static byte[] objToBytes(Object obj) {
         ByteArrayOutputStream bytos = null;
         ObjectOutputStream objos = null;

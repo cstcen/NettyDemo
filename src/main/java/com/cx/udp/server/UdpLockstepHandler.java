@@ -1,5 +1,6 @@
 package com.cx.udp.server;
 
+import com.cx.udp.util.ResponseWrapper;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -32,8 +33,8 @@ public class UdpLockstepHandler extends SimpleChannelInboundHandler<DatagramPack
             // todo 初始化
 
         }
-        for (Iterator<DatagramPacket> iter = UdpServer.msgQueue.iterator(); iter.hasNext();) {
-            DatagramPacket dp = iter.next();
+        for (Iterator<ResponseWrapper> iter = UdpServer.msgQueue.iterator(); iter.hasNext();) {
+            ResponseWrapper dp = iter.next();
             UdpServer.channel.writeAndFlush(dp);
             iter.remove();
         }

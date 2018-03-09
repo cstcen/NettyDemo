@@ -10,11 +10,19 @@ import io.netty.channel.socket.DatagramPacket;
 /**
  * Created by cx on 2018-3-5.
  */
-public class UdpClientHandler extends SimpleChannelInboundHandler<DatagramPacket> {
+public class UdpClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket) throws Exception {
-        System.out.println("消息来源"  + datagramPacket.sender().getHostString() +":"+ datagramPacket.sender().getPort());
-        String result = UdpUtil.byteBufToStr(datagramPacket.content());
-        System.out.println(result);
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
+        ResponseWrapper responseWrapper = UdpUtil.byteBufToResWrapper(byteBuf);
+        switch (responseWrapper.getResponseType()) {
+            case 1:
+                System.out.println(responseWrapper.getContext());
+                break;
+            case 2:
+                System.out.println(responseWrapper.getContext());
+                UdpClient.players = responseWrapper.getPlayers();
+            default:
+                break;
+        }
     }
 }

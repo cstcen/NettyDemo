@@ -1,5 +1,7 @@
-package com.cx.udp.message;
+package com.cx.udp.server;
 
+import com.cx.udp.util.RequestWrapper;
+import com.cx.udp.util.ResponseWrapper;
 import com.cx.udp.util.UdpUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,16 +18,12 @@ public class UdpRequestDecode extends MessageToMessageDecoder<DatagramPacket> {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket, List<Object> list) throws Exception {
         try {
-            List<UdpRequestData> requestDataList = new ArrayList<>();
-            UdpRequestData requestData = new UdpRequestData();
             ByteBuf content = datagramPacket.content();
+            RequestWrapper requestWrapper = UdpUtil.byteBufToReqWrapper(content);
 //            requestData.setEncode(content.readByte());
-            requestData.setRequestWrapper(UdpUtil.byteBufToReqWrapper(content));
-            requestData.setSender(datagramPacket.sender());
-            requestDataList.add(requestData);
-            list.add(requestDataList);
+            requestWrapper.setSender(datagramPacket.sender());
+            list.add(requestWrapper);
             datagramPacket.retain();
-            channelHandlerContext.fireChannelRead(datagramPacket);
         } catch (Exception e) {
             System.out.println("error decode udp packet from [ %s ], ignore! " + datagramPacket.sender().toString());
         }

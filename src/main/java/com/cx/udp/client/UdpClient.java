@@ -14,7 +14,11 @@ import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.net.InetSocketAddress;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by cx on 2018-3-5.
@@ -26,6 +30,8 @@ public class UdpClient {
     private int port;
     private Channel channel;
     private IPlayerOperation operation;
+
+    public static AbstractPlayer[] players = null;
 
     public UdpClient(int clientId) {
         this.clientId = clientId;
@@ -45,7 +51,7 @@ public class UdpClient {
             channel = b.bind(0).sync().channel();
             RequestWrapper requestWrapper = new RequestWrapper(clientId,1);
             requestWrapper.setContext("有客户端连接服务器……");
-            channel.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(UdpUtil.objToBytes(requestWrapper)), new InetSocketAddress(hostname, port)));
+            send(requestWrapper);
 //            channel.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer("连接服务器".getBytes()), new InetSocketAddress(hostname, port)));
 
 //            if (!channel.closeFuture().await(5000)) {
@@ -57,7 +63,7 @@ public class UdpClient {
     }
 
     public void send(RequestWrapper requestWrapper) {
-        UdpUtil.send(requestWrapper, channel, "255.255.255.255", port);
+        channel.writeAndFlush(requestWrapper);
     }
 
     public void operate(char c, AbstractPlayer[] players) {
@@ -115,6 +121,7 @@ public class UdpClient {
         System.out.println("选择角色：1.安其拉  2.李白");
         int num = scanner.nextInt();
         client.selectRole(num);
+        System.out.println(UdpServer.players.size());
         while (true) {
             System.out.println("选择技能：q w e r");
             String oper = scanner.next();

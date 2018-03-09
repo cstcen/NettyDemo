@@ -1,4 +1,4 @@
-package com.cx.udp.message;
+package com.cx.udp.server;
 
 import com.cx.udp.util.ResponseWrapper;
 import io.netty.buffer.ByteBuf;

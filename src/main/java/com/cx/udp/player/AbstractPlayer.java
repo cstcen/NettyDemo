@@ -47,8 +47,7 @@ public abstract class AbstractPlayer implements IPlayerOperation, Serializable {
         }
         sb.append("释放了《").append(operation).append("》技能！");
         System.out.println(sb.toString());
-        Skill skill = new Skill(this, targets, operation, damage);
-        return skill;
+        return new Skill(this, targets, operation, damage);
     }
 
     @Override

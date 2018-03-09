@@ -1,4 +1,4 @@
-package com.cx.udp.message;
+package com.cx.udp.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

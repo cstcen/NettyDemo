@@ -4,6 +4,7 @@ import com.cx.udp.player.AbstractPlayer;
 import com.cx.udp.player.Skill;
 
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 
 /**
  * Created by cx on 2018-3-7.
@@ -15,6 +16,8 @@ public class RequestWrapper implements Serializable {
     private String context;
     private Skill skill;
     private AbstractPlayer selectRole;
+
+    private InetSocketAddress sender;
 
     public RequestWrapper(int clientId, int requestType) {
         this.clientId = clientId;
@@ -59,5 +62,13 @@ public class RequestWrapper implements Serializable {
 
     public void setSelectRole(AbstractPlayer selectRole) {
         this.selectRole = selectRole;
+    }
+
+    public InetSocketAddress getSender() {
+        return sender;
+    }
+
+    public void setSender(InetSocketAddress sender) {
+        this.sender = sender;
     }
 }

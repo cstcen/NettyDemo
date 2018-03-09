@@ -13,9 +13,11 @@ public class UdpClientInitializer extends ChannelInitializer<NioDatagramChannel>
         ChannelPipeline pipeline = nioDatagramChannel.pipeline();
 
         // 添加UDP解码器
+        pipeline.addLast("UdpByteToMessageDecode", new UdpMessageToByteDecode());
         // pipeline.addLast("datagramPacketDecoder", new DatagramPacketDecoder(
         // new ProtobufDecoder(Message.getDefaultInstance())));
         // 添加UDP编码器
+        pipeline.addLast("UdpMessageToByteEncode", new UdpMessageToByteDecode());
         // pipeline.addLast("datagramPacketEncoder",
         // new DatagramPacketEncoder<Message>(new ProtobufEncoder()));
 

@@ -1,10 +1,10 @@
 package com.cx.udp.server;
 
 import com.cx.udp.player.AbstractPlayer;
+import com.cx.udp.util.ResponseWrapper;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
 import java.net.InetSocketAddress;
@@ -31,14 +31,14 @@ public class UdpServer {
     public static ChannelHandlerContext ctx = null;
 
     /**
-     * 搞个map保存与客户端地址的映射关系
+     * 搞个map保存客户端地址与最后收到信息的时间戳的映射关系
      */
-    public static ConcurrentMap<Integer, InetSocketAddress> userSocketMap = new ConcurrentHashMap<Integer, InetSocketAddress>();
+    public static ConcurrentMap<InetSocketAddress, Long> clientTimeMap = new ConcurrentHashMap<InetSocketAddress, Long>();
 
     /**
      *创建一个阻塞队列，用于消息缓冲
      */
-    public static BlockingQueue<DatagramPacket> msgQueue = new LinkedBlockingQueue<DatagramPacket>();
+    public static BlockingQueue<ResponseWrapper> msgQueue = new LinkedBlockingQueue<ResponseWrapper>();
 
     public static Set<AbstractPlayer> players = new HashSet<>();
 
@@ -86,6 +86,14 @@ public class UdpServer {
         }
     }
 
+    public static void addClient(InetSocketAddress inetSocketAddress, long l) {
+        clientTimeMap.put(inetSocketAddress, l);
+    }
+
+    public static void removeClient(InetSocketAddress inetSocketAddress) {
+        clientTimeMap.remove(inetSocketAddress);
+    }
+
     public static void main(String[] args) {
         try {
             // todo 初始化数值表
@@ -97,4 +105,6 @@ public class UdpServer {
             e.printStackTrace();
         }
     }
+
+
 }

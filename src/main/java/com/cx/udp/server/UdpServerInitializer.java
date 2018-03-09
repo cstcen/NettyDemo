@@ -1,6 +1,5 @@
 package com.cx.udp.server;
 
-import com.cx.udp.message.UdpRequestDecode;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -49,6 +48,7 @@ public class UdpServerInitializer extends ChannelInitializer<NioDatagramChannel>
         // pipeline.addLast("datagramPacketDecoder", new DatagramPacketDecoder(
         // new ProtobufDecoder(Message.getDefaultInstance())));
         // 添加UDP编码器
+        pipeline.addLast("UdpResponseEncode", new UdpResponseEncode());
         // pipeline.addLast("datagramPacketEncoder",
         // new DatagramPacketEncoder<Message>(new ProtobufEncoder()));
 

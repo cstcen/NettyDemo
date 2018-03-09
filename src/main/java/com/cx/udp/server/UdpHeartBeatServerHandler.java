@@ -15,13 +15,14 @@ public class UdpHeartBeatServerHandler extends SimpleChannelInboundHandler<Datag
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket) throws Exception {
-        System.out.println(channelHandlerContext.name() + " 消息来源" + datagramPacket.sender().getHostString() + ":" + datagramPacket.sender().getPort());
-        System.out.println(UdpUtil.byteBufToStr(datagramPacket.content()));
+        lossConnectCount = 1;
+        datagramPacket.retain();
+        channelHandlerContext.fireChannelRead(datagramPacket);
     }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println(ctx.name() + " 已经" + (lossConnectCount * 60) + "秒未收到客户端的消息了！");
+        System.out.println("已经" + (lossConnectCount * 60) + "秒未收到客户端的消息了！");
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {

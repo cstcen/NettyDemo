@@ -1,6 +1,6 @@
 package com.cx.udp.session;
 
-import com.cx.udp.player.Player;
+import com.cx.udp.player.AbstractPlayer;
 import io.netty.channel.Channel;
 
 /**
@@ -16,7 +16,7 @@ public class Session {
     /**
      * 玩家
      */
-    public Player player;
+    public AbstractPlayer player;
 
     /**
      * 客户端IP

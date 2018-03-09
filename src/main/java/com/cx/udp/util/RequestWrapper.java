@@ -1,19 +1,32 @@
 package com.cx.udp.util;
 
+import com.cx.udp.player.AbstractPlayer;
+import com.cx.udp.player.Skill;
+
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * Created by cx on 2018-3-7.
  */
 public class RequestWrapper implements Serializable {
 
+    private int clientId;
     private int requestType;
     private String context;
-    private Map<String, Object> operMap;
+    private Skill skill;
+    private AbstractPlayer selectRole;
 
-    public RequestWrapper(int requestType) {
+    public RequestWrapper(int clientId, int requestType) {
+        this.clientId = clientId;
         this.requestType = requestType;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 
     public int getRequestType() {
@@ -32,11 +45,19 @@ public class RequestWrapper implements Serializable {
         this.context = context;
     }
 
-    public Map<String, Object> getOperMap() {
-        return operMap;
+    public Skill getSkill() {
+        return skill;
     }
 
-    public void setOperMap(Map<String, Object> operMap) {
-        this.operMap = operMap;
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public AbstractPlayer getSelectRole() {
+        return selectRole;
+    }
+
+    public void setSelectRole(AbstractPlayer selectRole) {
+        this.selectRole = selectRole;
     }
 }

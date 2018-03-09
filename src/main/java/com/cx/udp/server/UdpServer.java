@@ -1,14 +1,15 @@
 package com.cx.udp.server;
 
-import com.cx.udp.client.UdpClient;
+import com.cx.udp.player.AbstractPlayer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.InetSocketAddress;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -32,12 +33,14 @@ public class UdpServer {
     /**
      * 搞个map保存与客户端地址的映射关系
      */
-    public static ConcurrentMap<Integer, UdpClient> userSocketMap = new ConcurrentHashMap<Integer, UdpClient>();
+    public static ConcurrentMap<Integer, InetSocketAddress> userSocketMap = new ConcurrentHashMap<Integer, InetSocketAddress>();
 
     /**
      *创建一个阻塞队列，用于消息缓冲
      */
     public static BlockingQueue<DatagramPacket> msgQueue = new LinkedBlockingQueue<DatagramPacket>();
+
+    public static Set<AbstractPlayer> players = new HashSet<>();
 
     /**
      * 监听端口号

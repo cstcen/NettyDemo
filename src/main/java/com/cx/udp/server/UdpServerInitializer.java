@@ -1,5 +1,6 @@
 package com.cx.udp.server;
 
+import com.cx.udp.message.UdpRequestDecode;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioDatagramChannel;
@@ -44,13 +45,14 @@ public class UdpServerInitializer extends ChannelInitializer<NioDatagramChannel>
          */
 
         // 添加UDP解码器
+        pipeline.addLast("UdpRequestDecode", new UdpRequestDecode());
         // pipeline.addLast("datagramPacketDecoder", new DatagramPacketDecoder(
         // new ProtobufDecoder(Message.getDefaultInstance())));
         // 添加UDP编码器
         // pipeline.addLast("datagramPacketEncoder",
         // new DatagramPacketEncoder<Message>(new ProtobufEncoder()));
 
-        //消息处理器
+        // 消息处理器
         pipeline.addLast("handler", new UdpServerHandler());
 
         //此两项为添加心跳机制,60秒查看一次在线的客户端channel是否空闲

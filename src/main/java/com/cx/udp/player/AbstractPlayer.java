@@ -1,24 +1,18 @@
 package com.cx.udp.player;
 
-import com.cx.udp.util.RequestWrapper;
 import io.netty.channel.Channel;
-import io.netty.channel.socket.DatagramPacket;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.io.Serializable;
 
 /**
  * Created by cx on 2018-3-7.
  */
-public abstract class Player implements IPlayerOperation {
+public abstract class AbstractPlayer implements IPlayerOperation, Serializable {
     private String name;
     private int blood;
     private Channel channel;
-    private BlockingQueue<DatagramPacket> msgQueue = new LinkedBlockingQueue<DatagramPacket>();
 
-    public Player(String name) {
+    public AbstractPlayer(String name) {
         this.name = name;
         this.blood = 100;
     }
@@ -43,23 +37,33 @@ public abstract class Player implements IPlayerOperation {
      * @return
      */
     @Override
-    public RequestWrapper operate(Player[] targets, String operation, int damage) {
+    public Skill operate(AbstractPlayer[] targets, String operation, int damage) {
         StringBuilder sb = new StringBuilder(this.getName() + "--对");
         for (int i = 0; i < targets.length; i++) {
-            sb.append(targets[i].getName() + "（" + targets[i].getBlood() + "）");
+            sb.append(targets[i].getName()).append("（").append(targets[i].getBlood()).append("）");
             if (i != targets.length - 1) {
                 sb.append("、");
             }
         }
-        sb.append("释放了《" + operation + "》技能！");
+        sb.append("释放了《").append(operation).append("》技能！");
         System.out.println(sb.toString());
-        RequestWrapper msgWrapper = new RequestWrapper(2);
-        Map<String, Object> operMap = new HashMap<String, Object>(3);
-        operMap.put("targets", targets);
-        operMap.put("operation", operation);
-        operMap.put("damage", damage);
-        msgWrapper.setOperMap(operMap);
-        return msgWrapper;
+        Skill skill = new Skill(this, targets, operation, damage);
+        return skill;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() * 37;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AbstractPlayer) {
+            AbstractPlayer p = (AbstractPlayer) obj;
+            return this.name.equals(p.getName()) && this.blood == p.getBlood() && this.channel == p.getChannel();
+        } else {
+            return false;
+        }
     }
 
     public boolean isDead() {

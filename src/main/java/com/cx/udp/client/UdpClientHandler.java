@@ -14,7 +14,7 @@ public class UdpClientHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, DatagramPacket datagramPacket) throws Exception {
         System.out.println("消息来源"  + datagramPacket.sender().getHostString() +":"+ datagramPacket.sender().getPort());
-        ResponseWrapper wrapper = UdpUtil.byteBufToResWrapper(datagramPacket.content());
-        System.out.println(wrapper);
+        String result = UdpUtil.byteBufToStr(datagramPacket.content());
+        System.out.println(result);
     }
 }

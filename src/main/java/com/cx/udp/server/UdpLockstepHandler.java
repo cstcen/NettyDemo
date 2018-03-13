@@ -28,7 +28,7 @@ public class UdpLockstepHandler extends SimpleChannelInboundHandler<DatagramPack
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println("帧数：" + turnNum + " 消息：" + UdpServer.msgQueue.size() + " 连接数：" + UdpServer.userSocketMap.size());
+        System.out.println("帧数：" + turnNum + " 消息：" + UdpServer.msgQueue.size() + " 连接数：" + UdpServer.clientTimeMap.size());
         if (0 == turnNum) {
             // todo 初始化
 
